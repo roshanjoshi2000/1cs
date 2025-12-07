@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My first template</title>
+</head>
+<body>
+
+<h1>My Webpage</h1>
+
+<!-- Navigation merged into this file -->
+<ul id="navigation">
+    <li><a href="#">Page 1</a></li>
+    <li><a href="#">Page 2</a></li>
+    <li><a href="#">Page 3</a></li>
+</ul>
+
+<p>{{ a_variable }}</p>
+<p>{{ another_variable|upper }}</p>
+
+<ul>
+{% for item in people %}
+    <li>{{ item.FirstName }} {{ item.Surname }}</li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
+
+
