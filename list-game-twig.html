@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>List of All Games</h1>
+        
+        <div class="mb-3">
+            <a href="add-game-form.php" class="btn btn-success">Add New Game</a>
+            <a href="index.php" class="btn btn-secondary">Back to Home</a>
+        </div>
+        
+        {% if num_rows > 0 %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Game Name</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in results %}
+                    <tr>
+                        <td>
+                            <a href="game-details.php?id={{ game.game_id }}">
+                                {{ game.game_name }}
+                            </a>
+                        </td>
+                        <td>{{ game.rating }}</td>
+                        <td>
+                            <a href="edit-games.php?id={{ game.game_id }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="delete.php?id={{ game.game_id }}" 
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Delete {{ game.game_name }}?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                No games found. <a href="add-game-form.php">Add your first game!</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
