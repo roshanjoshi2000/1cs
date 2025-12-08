@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Game - Game Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>🎮 Add New Game</h2>
+                        <p class="text-muted">Fill in the details below to add a new game</p>
+                    </div>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    
+                    {% if success %}
+                        <div class="alert alert-success">{{ success }}</div>
+                    {% endif %}
+                    
+                    <form method="POST" action="">
+                        <div class="mb-3">
+                            <label for="game_name" class="form-label">Game Name *</label>
+                            <input type="text" class="form-control" id="game_name" name="game_name" 
+                                   value="{{ form_data.game_name|default('') }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="game_description" class="form-label">Description</label>
+                            <textarea class="form-control" id="game_description" name="game_description" 
+                                      rows="3">{{ form_data.game_description|default('') }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="released_date" class="form-label">Release Date *</label>
+                                <input type="date" class="form-control" id="released_date" name="released_date" 
+                                       value="{{ form_data.released_date|default('') }}" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="rating" class="form-label">Rating (0-10) *</label>
+                                <input type="number" class="form-control" id="rating" name="rating" 
+                                       min="0" max="10" step="0.1" 
+                                       value="{{ form_data.rating|default('5') }}" required>
+                                <div class="form-text">Enter a rating between 0 and 10</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="list-game-twig.php" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Game</button>
+                        </div>
+                    </form>
+                    
+                    <!-- Form Tips -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h6>📝 Form Tips:</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li>• Required fields are marked with *</li>
+                            <li>• Rating should be between 0 and 10</li>
+                            <li>• You can use decimal values for rating (e.g., 7.5)</li>
+                            <li>• Game names should be unique</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for form validation -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const ratingInput = document.getElementById('rating');
+        
+        form.addEventListener('submit', function(e) {
+            const rating = parseFloat(ratingInput.value);
+            
+            if (rating < 0 || rating > 10) {
+                e.preventDefault();
+                alert('Rating must be between 0 and 10');
+                ratingInput.focus();
+                return false;
+            }
+            
+            // Show loading
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = 'Adding...';
+            submitBtn.disabled = true;
+        });
+        
+        // Set today's date as default for release date
+        const dateInput = document.getElementById('released_date');
+        if (!dateInput.value) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+        }
+        
+        // Auto-focus first input
+        document.getElementById('game_name').focus();
+    });
+    </script>
+</body>
+</html>
